@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rere Florist</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Poppins&display=swap" rel="stylesheet">
+
+<style>
+/* ===== BACKGROUND AESTHETIC ===== */
+body{
+  margin:0;
+  font-family:Poppins, sans-serif;
+  background:linear-gradient(135deg,#f8c8dc,#ffffff);
+  overflow:auto;
+  position:relative;
+}
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  background:url('mawar.jpg') center/cover no-repeat;
+  opacity:.06; z-index:-2;
+}
+body::after{
+  content:"";
+  position:fixed; inset:0;
+  background:
+    radial-gradient(circle at 20% 30%, #ffd6e8, transparent 50%),
+    radial-gradient(circle at 80% 70%, #e0f2e9, transparent 50%);
+  z-index:-1;
+}
+.blob,.blob2{
+  position:fixed; border-radius:50%; filter:blur(80px); z-index:-1;
+}
+.blob{width:220px;height:220px;background:#f8c8dc;top:8%;left:8%;}
+.blob2{width:260px;height:260px;background:#d8f3dc;bottom:8%;right:8%;}
+
+/* ===== NAVBAR ===== */
+.navbar{
+  position:fixed; top:0; left:0; right:0;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:10px 16px;
+  background:rgba(255,255,255,.7);
+  backdrop-filter:blur(10px);
+  z-index:10;
+}
+.navbar b{font-family:"Playfair Display",serif}
+
+/* ===== PAGE SYSTEM ===== */
+.page{
+  display:none;
+  min-height:100vh;
+  padding:84px 16px 24px;
+  text-align:center;
+}
+.active{
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+}
+h1,h2{font-family:"Playfair Display",serif; margin:6px 0 10px}
+
+.glass{
+  width:100%; max-width:520px;
+  background:rgba(255,255,255,.65);
+  border-radius:22px;
+  padding:26px 22px;
+  box-shadow:0 10px 30px rgba(0,0,0,.12);
+}
+
+/* ===== BUTTON ===== */
+button{
+  padding:10px 18px; border:none; border-radius:22px;
+  margin:6px; cursor:pointer; transition:.25s;
+}
+button:hover{transform:scale(1.05)}
+.primary{background:#6d8f72;color:#fff}
+.secondary{background:#e6e6e6}
+
+/* ===== PRODUCT GRID ===== */
+.product-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:14px; margin-top:10px;
+}
+.card{
+  background:#fff; border-radius:16px; padding:10px;
+  box-shadow:0 6px 18px rgba(0,0,0,.1);
+  transition:.25s;
+}
+.card:hover{transform:translateY(-6px)}
+.card img{width:100%; border-radius:10px}
+
+/* ===== INPUT ===== */
+input, textarea{
+  width:100%; padding:10px; border-radius:12px;
+  border:1px solid #ddd; margin:6px 0;
+  font-family:Poppins;
+}
+
+/* ===== CART ===== */
+ul{padding-left:16px; text-align:left}
+li{margin:6px 0}
+
+/* ===== NOTIF POPUP ===== */
+#notif{
+  position:fixed; top:50%; left:50%;
+  transform:translate(-50%,-50%) scale(.8);
+  background:#fff; padding:18px 26px;
+  border-radius:26px;
+  box-shadow:0 20px 50px rgba(0,0,0,.25);
+  font-weight:600; opacity:0;
+  z-index:9999; transition:.3s;
+}
+#notif.show{
+  opacity:1; transform:translate(-50%,-50%) scale(1);
+}
+
+/* ===== FLOWER FALL ===== */
+.flower{
+  position:fixed; top:-20px; font-size:14px;
+  animation:fall linear infinite;
+}
+@keyframes fall{
+  to{transform:translateY(100vh)}
+}
+</style>
+</head>
+
+<body>
+
+<div class="blob"></div>
+<div class="blob2"></div>
+
+<div class="navbar">
+  <b>Rere Florist</b>
+  <div>
+    <button onclick="goTo('welcome')">Home</button>
+    <button onclick="goTo('product')">Produk</button>
+    <button onclick="goTo('cart')">Keranjang</button>
+  </div>
+</div>
+
+<div id="notif"><span id="notifText"></span></div>
+
+<!-- ===== WELCOME ===== -->
+<div id="welcome" class="page active">
+  <div class="glass">
+    <h1>Selamat Datang di Rere Florist 🌸</h1>
+    <p>Bunga adalah bahasa perasaan yang tak terucap.</p>
+    <button class="primary" onclick="goTo('landing')">Masuk ke Dunia Bunga</button>
+  </div>
+</div>
+
+<!-- ===== LANDING ===== -->
+<div id="landing" class="page">
+  <div class="glass">
+    <h1>Pesan Bunga Mudah & Cepat</h1>
+    <p>Kirim bunga dengan makna, bukan sekadar hadiah.</p>
+    <button class="primary" onclick="goTo('mood')">Pilih Perasaan</button>
+    <button onclick="goTo('product')">Lihat Produk</button>
+    <br>
+    <button class="secondary" onclick="goBack()">← Kembali</button>
+  </div>
+</div>
+
+<!-- ===== MOOD ===== -->
+<div id="mood" class="page">
+  <div class="glass">
+    <h2>Pilih Perasaan</h2>
+    <button onclick="setMood('romantis')">Romantis</button>
+    <button onclick="setMood('bahagia')">Bahagia</button>
+    <button onclick="setMood('tenang')">Tenang</button>
+    <button onclick="setMood('sedih')">Sedih</button>
+
+    <div id="moodContent" style="margin-top:10px"></div>
+
+    <br>
+    <button class="secondary" onclick="goBack()">← Kembali</button>
+  </div>
+</div>
+
+<!-- ===== PRODUCT ===== -->
+<div id="product" class="page">
+  <div class="glass">
+    <h2>Produk Kami</h2>
+
+    <div class="product-grid">
+      <!-- Sweet Bouquet (no image) -->
+      <div class="card">
+        <h3>Sweet Bouquet</h3>
+        <p>Custom 💐</p>
+        <button onclick="goTo('request')">Request</button>
+      </div>
+
+      <div class="card">
+        <img src="mawar.jpg">
+        <h3>Mawar</h3>
+        <p>180k</p>
+        <button onclick="addCart('Mawar',180000)">Pesan</button>
+      </div>
+
+      <div class="card">
+        <img src="tulip.jpg">
+        <h3>Tulip</h3>
+        <p>200k</p>
+        <button onclick="addCart('Tulip',200000)">Pesan</button>
+      </div>
+
+      <div class="card">
+        <img src="lily.jpg">
+        <h3>Lily</h3>
+        <p>220k</p>
+        <button onclick="addCart('Lily',220000)">Pesan</button>
+      </div>
+
+      <div class="card">
+        <img src="lavender.jpg">
+        <h3>Lavender</h3>
+        <p>170k</p>
+        <button onclick="addCart('Lavender',170000)">Pesan</button>
+      </div>
+    </div>
+
+    <button class="primary" onclick="goTo('cart')">Keranjang</button>
+    <br>
+    <button class="secondary" onclick="goBack()">← Kembali</button>
+  </div>
+</div>
+
+<!-- ===== REQUEST CUSTOM ===== -->
+<div id="request" class="page">
+  <div class="glass">
+    <h2>Custom Bouquet</h2>
+    <input id="reqNama" placeholder="Jenis bunga (contoh: mawar putih)">
+    <textarea id="reqNote" placeholder="Catatan (warna, jumlah, dll)"></textarea>
+    <button onclick="kirimRequest()">Kirim Request</button>
+    <br>
+    <button class="secondary" onclick="goBack()">← Kembali</button>
+  </div>
+</div>
+
+<!-- ===== CART ===== -->
+<div id="cart" class="page">
+  <div class="glass">
+    <h2>Keranjang</h2>
+
+    <ul id="list"></ul>
+    <p id="total"></p>
+
+    <input id="waUser" placeholder="Nomor WhatsApp (08xxx)">
+    <textarea id="note" placeholder="Pesan kartu (opsional)"></textarea>
+    <input id="tanggal" placeholder="Tanggal kirim (opsional)">
+
+    <button class="primary" onclick="checkout()">Checkout</button>
+
+    <br>
+    <button class="secondary" onclick="goBack()">← Kembali</button>
+  </div>
+</div>
+
+<!-- ===== THANKS ===== -->
+<div id="thanks" class="page">
+  <div class="glass">
+    <h1>Terimakasih 💐</h1>
+    <p>Pesanan kamu sudah kami terima dan akan segera diproses 🌸</p>
+    <button onclick="goTo('welcome')">Kembali ke Home</button>
+  </div>
+</div>
+
+<script>
+let cart=[];
+let historyPage=[];
+let flowerInterval;
+
+/* ===== NAVIGATION ===== */
+function goTo(p){
+  historyPage.push(p);
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById(p).classList.add('active');
+
+  if(p==="welcome" || p==="thanks"){ startFlower(); }
+  else{ stopFlower(); }
+}
+function goBack(){
+  historyPage.pop();
+  let last=historyPage.pop();
+  if(!last) last="welcome";
+  goTo(last);
+}
+
+/* ===== FLOWER ===== */
+function startFlower(){
+  stopFlower();
+  flowerInterval=setInterval(()=>{
+    let f=document.createElement('div');
+    f.className='flower';
+    f.innerText='🌸';
+    f.style.left=Math.random()*100+'vw';
+    f.style.animationDuration=(Math.random()*5+5)+'s';
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),8000);
+  },300);
+}
+function stopFlower(){
+  clearInterval(flowerInterval);
+}
+
+/* ===== NOTIF ===== */
+function notif(text){
+  let n=document.getElementById('notif');
+  document.getElementById('notifText').innerText=text;
+  n.classList.add('show');
+  setTimeout(()=>n.classList.remove('show'),1500);
+}
+
+/* ===== CART ===== */
+function addCart(n,h){
+  cart.push({n,h});
+  render();
+  notif("💐 Berhasil ditambahkan ke keranjang!");
+}
+function kirimRequest(){
+  let nama=document.getElementById('reqNama').value;
+  let note=document.getElementById('reqNote').value;
+  cart.push({n:"Custom: "+nama+" ("+note+")",h:0});
+  render();
+  notif("🌸 Request bouquet masuk!");
+  goTo('cart');
+}
+function render(){
+  let list=document.getElementById('list');
+  let total=0;
+  list.innerHTML="";
+  cart.forEach((i,idx)=>{
+    total+=i.h;
+    list.innerHTML+=`<li>${i.n} - ${i.h?i.h/1000+'k':'Custom'}
+    <button onclick="hapus(${idx})">❌</button></li>`;
+  });
+  document.getElementById('total').innerText="Total: "+(total/1000)+"k";
+}
+function hapus(i){
+  cart.splice(i,1);
+  render();
+}
+
+/* ===== CHECKOUT WA ===== */
+function checkout(){
+  let nomor=document.getElementById('waUser').value;
+  if(!nomor){alert("Isi nomor dulu");return;}
+
+  let pesan="Halo Rere Florist 🌸%0A";
+  cart.forEach(i=>pesan+="- "+i.n+"%0A");
+
+  let note=document.getElementById('note').value;
+  let tgl=document.getElementById('tanggal').value;
+  if(note) pesan+="Catatan: "+note+"%0A";
+  if(tgl) pesan+="Tanggal kirim: "+tgl+"%0A";
+
+  window.open("https://wa.me/62"+nomor.substring(1)+"?text="+pesan);
+  goTo('thanks');
+}
+
+/* ===== MOOD ===== */
+function setMood(m){
+  const d={
+    romantis:{n:"Mawar 🌹",img:"mawar.jpg",d:"Simbol cinta tulus dan mendalam—pilihan klasik untuk ungkapkan perasaan."},
+    bahagia:{n:"Tulip 🌷",img:"tulip.jpg",d:"Warna cerahnya membawa energi bahagia dan harapan baru."},
+    tenang:{n:"Lily 🤍",img:"lily.jpg",d:"Elegan dan damai—cocok untuk suasana menenangkan."},
+    sedih:{n:"Lavender 💜",img:"lavender.jpg",d:"Lembut dan menenangkan—menemani di saat hati sendu."}
+  };
+  document.getElementById('moodContent').innerHTML=
+  `<h3>${d[m].n}</h3>
+   <img src="${d[m].img}" width="120">
+   <p>${d[m].d}</p>`;
+}
+
+/* start */
+startFlower();
+</script>
+
+</body>
+</html>
