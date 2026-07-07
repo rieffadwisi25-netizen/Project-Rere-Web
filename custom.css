@@ -1,0 +1,252 @@
+*{
+
+margin:0;
+
+padding:0;
+
+box-sizing:border-box;
+
+font-family:Arial;
+
+}
+
+body{
+
+background:#f8f5f1;
+
+}
+
+header{
+    height:130px;
+    background:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.back{
+
+position:absolute;
+
+left:30px;
+
+text-decoration:none;
+
+font-size:18px;
+
+color:#7b5d41;
+
+font-weight:bold;
+
+}
+
+.container{
+
+display:flex;
+
+height:calc(100vh - 80px);
+
+}
+
+.sidebar{
+
+width:260px;
+
+background:white;
+
+padding:20px;
+
+overflow-y:auto;
+
+box-shadow:2px 0 10px rgba(0,0,0,.05);
+
+}
+
+.sidebar h2{
+
+margin:20px 0;
+
+}
+
+.sidebar img{
+
+width:90px;
+
+margin:8px;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.sidebar img:hover{
+
+transform:scale(1.1);
+
+}
+
+.workspace{
+
+flex:1;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+}
+
+#canvas{
+    width:700px;
+    height:550px;
+
+background:white;
+
+border-radius:20px;
+
+position:relative;
+
+overflow:hidden;
+
+box-shadow:0 0 20px rgba(0,0,0,.1);
+
+}
+
+.wrap{
+
+width:250px;
+
+position:absolute;
+
+bottom:20px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+}
+
+.flower{
+
+width:120px;
+
+position:absolute;
+
+cursor:move;
+
+}
+
+button{
+
+margin-top:20px;
+
+padding:15px 30px;
+
+background:#D4AF37;
+
+border:none;
+
+border-radius:30px;
+
+font-size:18px;
+
+cursor:pointer;
+
+}
+#bouquet{
+    position:absolute;
+    width:350px;
+    height:520px;
+    left:50%;
+    bottom:20px;
+    transform:translateX(-50%);
+}
+
+#flowerArea{
+    position:absolute;
+    width:100%;
+    height:330px;
+    left:0;
+    top:0;
+}
+
+.wrap{
+    position:absolute;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+    width:280px;
+    z-index:10;
+    pointer-events:none;
+}
+
+.flower{
+    position:absolute;
+    width:120px;
+    cursor:grab;
+    z-index:1;
+}
+.title-area{
+
+text-align:center;
+
+}
+
+.title-area h3{
+
+font-size:13px;
+
+letter-spacing:5px;
+
+color:#d4af37;
+
+margin-bottom:5px;
+
+}
+
+.title-area h1{
+
+font-family:'Cormorant Garamond', serif;
+
+font-size:48px;
+
+color:#7b5d41;
+
+margin:0;
+
+}
+
+.title-area p{
+
+font-size:15px;
+
+color:#777;
+
+margin-top:8px;
+
+}
+.wrapping-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:10px;
+}
+
+.wrapping-list img{
+    width:80px;
+    cursor:pointer;
+    border:2px solid transparent;
+    border-radius:10px;
+    transition:.3s;
+}
+
+.wrapping-list img:hover{
+    border-color:#D4AF37;
+    transform:scale(1.05);
+}

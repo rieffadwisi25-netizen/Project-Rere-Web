@@ -1,46 +1,43 @@
 <?php
-include 'koneksi.php';
+include "koneksi.php";
 
 if(isset($_POST['register'])){
 
-    $nama = $_POST['nama'];
+    $username = $_POST['username'];
     $email = $_POST['email'];
+    $password = $_POST['password'];
 
-    $password =
-    password_hash($_POST['password'],
-    PASSWORD_DEFAULT);
+    mysqli_query($conn,"INSERT INTO user(username,email,password)
+    VALUES('$username','$email','$password')");
 
-    mysqli_query($conn,
-    "INSERT INTO user(nama,email,password)
-    VALUES('$nama','$email','$password')");
-
-    header("Location:login.php");
+    echo "<script>
+    alert('Register berhasil');
+    window.location='login.php';
+    </script>";
 }
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>Register</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <form method="POST">
 
-<input type="text"
-name="nama"
-placeholder="Nama">
+<h2>Register</h2>
 
-<input type="email"
-name="email"
-placeholder="Email">
+<input type="text" name="username" placeholder="Username" required>
 
-<input type="password"
-name="password"
-placeholder="Password">
+<input type="email" name="email" placeholder="Email" required>
 
-<button name="register">
+<input type="password" name="password" placeholder="Password" required>
+
+<button type="submit" name="register">
 Daftar
 </button>
 
